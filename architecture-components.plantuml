@@ -1,0 +1,39 @@
+@startuml NFT Marketplace System
+
+!define RECTANGLE class
+
+skinparam component {
+  BackgroundColor<<Frontend>> LightBlue
+  BackgroundColor<<Backend>> LightGreen
+  BackgroundColor<<Blockchain>> LightYellow
+}
+
+rectangle "NFT Marketplace System" {
+  component [Web Frontend] <<Frontend>> as WebFront
+  component [Mobile Frontend] <<Frontend>> as MobileFront
+  component [Backend API] <<Backend>> as BackAPI
+  component [Blockchain Service] <<Backend>> as BlockchainService
+  component [Smart Contracts] <<Blockchain>> as SmartContracts
+  database "Database" as DB
+
+  [WebFront] --> BackAPI : HTTP/REST
+  [MobileFront] --> BackAPI : HTTP/REST
+  BackAPI --> BlockchainService : Internal API
+  BlockchainService --> SmartContracts : Web3 calls
+  BackAPI --> DB : CRUD Operations
+
+  note right of WebFront : React.js, Next.js
+  note right of MobileFront : React Native/Flutter
+  note right of BackAPI : Node.js, Express/NestJS
+  note right of BlockchainService : Node.js, Web3.js/Ethers.js
+  note right of SmartContracts : Solidity
+  note right of DB : MongoDB
+
+  component [Common Library] as Common
+  WebFront ..> Common : uses
+  MobileFront ..> Common : uses
+  BackAPI ..> Common : uses
+  BlockchainService ..> Common : uses
+}
+
+@enduml
